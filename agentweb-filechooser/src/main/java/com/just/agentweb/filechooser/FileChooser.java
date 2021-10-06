@@ -214,6 +214,8 @@ public class FileChooser {
     private Intent getFileChooserIntent() {
         Intent mIntent = null;
         if (mIsAboveLollipop && mFileChooserParams != null && (mIntent = mFileChooserParams.createIntent()) != null) {
+
+System.out.println("getFileChooserIntent");
             // 多选
 			if (mFileChooserParams.getMode() == WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE) {
 			    mIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -232,6 +234,7 @@ public class FileChooser {
             i.setAction(Intent.ACTION_GET_CONTENT);
         }
         i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         if (TextUtils.isEmpty(this.mAcceptType)) {
             i.setType("*/*");
         } else {
