@@ -236,6 +236,7 @@ public class FileChooser {
             i.setAction(Intent.ACTION_GET_CONTENT);
         }
         i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
          i.setType("*/*");
         // if (TextUtils.isEmpty(this.mAcceptType)) {
         //     i.setType("*/*");
