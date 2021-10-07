@@ -241,7 +241,7 @@ public class FileChooser {
         } else {
             i.setType(this.mAcceptType);
         }
-        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        //i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return mIntent = Intent.createChooser(i, "");
     }
 
