@@ -212,6 +212,7 @@ public class FileChooser {
     }
 
     private Intent getFileChooserIntent() {
+        System.out.println("getFileChooserIntent");
         Intent mIntent = null;
         if (mIsAboveLollipop && mFileChooserParams != null && (mIntent = mFileChooserParams.createIntent()) != null) {
             System.out.println("this");
@@ -242,7 +243,8 @@ public class FileChooser {
         //     i.setType(this.mAcceptType);
         // }
         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        return mIntent = Intent.createChooser(i, "");
+        return i;
+        //return mIntent = Intent.createChooser(i, "");
     }
 
     private ActionActivity.ChooserListener getChooserListener() {
