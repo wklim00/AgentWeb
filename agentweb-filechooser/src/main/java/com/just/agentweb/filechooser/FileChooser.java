@@ -214,6 +214,7 @@ public class FileChooser {
     private Intent getFileChooserIntent() {
         Intent mIntent = null;
         if (mIsAboveLollipop && mFileChooserParams != null && (mIntent = mFileChooserParams.createIntent()) != null) {
+            mIntent.setType("*/*");
             // 多选
 			/*if (mFileChooserParams.getMode() == WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE) {
 			    mIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
