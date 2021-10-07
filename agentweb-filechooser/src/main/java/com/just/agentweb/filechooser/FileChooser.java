@@ -229,11 +229,12 @@ public class FileChooser {
         }
 
         Intent i = new Intent();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            i.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        } else {
-            i.setAction(Intent.ACTION_GET_CONTENT);
-        }
+        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        //     i.setAction(Intent.ACTION_OPEN_DOCUMENT);
+        // } else {
+        //     i.setAction(Intent.ACTION_GET_CONTENT);
+        // }
+        i.setAction(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         if (TextUtils.isEmpty(this.mAcceptType)) {
