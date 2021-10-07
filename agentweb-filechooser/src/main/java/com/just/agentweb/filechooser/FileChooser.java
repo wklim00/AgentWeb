@@ -223,7 +223,7 @@ public class FileChooser {
             }
 //			mIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mIntent.getAction().equals(Intent.ACTION_GET_CONTENT)) {
-                mIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                mIntent.setAction(Intent.ACTION_GET_CONTENT);
             }
             return mIntent;
         }
