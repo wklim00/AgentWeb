@@ -212,18 +212,33 @@ public class FileChooser {
     }
 
     private Intent getFileChooserIntent() {
+        Intent mIntent = null;
+        if (mIsAboveLollipop && mFileChooserParams != null && (mIntent = mFileChooserParams.createIntent()) != null) {
+            // 多选
+			/*if (mFileChooserParams.getMode() == WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE) {
+			    mIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            }*/
+//			mIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mIntent.getAction().equals(Intent.ACTION_GET_CONTENT)) {
+                mIntent.setAction(Intent.ACTION_GET_CONTENT);
+            }
+            return mIntent;
+        }
+
         Intent i = new Intent();
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      i.setAction(Intent.ACTION_OPEN_DOCUMENT);
-    } else {
-      i.setAction(Intent.ACTION_GET_CONTENT);
-    }
-    i.addCategory(Intent.CATEGORY_OPENABLE);
-    i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-    i.setType("*/*");
-    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-    return mIntent = Intent.createChooser(i, "");
-        //return mIntent = Intent.createChooser(i, "");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            i.setAction(Intent.ACTION_GET_CONTENT);
+        } else {
+            i.setAction(Intent.ACTION_GET_CONTENT);
+        }
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        if (TextUtils.isEmpty(this.mAcceptType)) {
+            i.setType("*/*");
+        } else {
+            i.setType(this.mAcceptType);
+        }
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        return mIntent = Intent.createChooser(i, "");
     }
 
     private ActionActivity.ChooserListener getChooserListener() {
