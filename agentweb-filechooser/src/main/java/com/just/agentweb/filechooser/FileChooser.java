@@ -212,7 +212,6 @@ public class FileChooser {
     }
 
     private Intent getFileChooserIntent() {
-        System.out.println("222222222");
         Intent mIntent = null;
         if (mIsAboveLollipop && mFileChooserParams != null && (mIntent = mFileChooserParams.createIntent()) != null) {
             // 多选
@@ -223,11 +222,8 @@ public class FileChooser {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mIntent.getAction().equals(Intent.ACTION_GET_CONTENT)) {
                 mIntent.setAction(Intent.ACTION_GET_CONTENT);
             }
-            System.out.println("-------------------");
             return mIntent;
         }
-
-        System.out.println("1111111111111");
 
         Intent i = new Intent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
