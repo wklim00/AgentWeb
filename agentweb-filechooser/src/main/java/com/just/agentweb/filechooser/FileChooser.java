@@ -226,9 +226,11 @@ public class FileChooser {
             return mIntent;
         }
 
+        System.out.println("1111111111111");
+
         Intent i = new Intent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            i.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            i.setAction(Intent.ACTION_GET_CONTENT);
         } else {
             i.setAction(Intent.ACTION_GET_CONTENT);
         }
