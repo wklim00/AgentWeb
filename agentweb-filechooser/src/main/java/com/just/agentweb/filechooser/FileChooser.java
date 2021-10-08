@@ -222,6 +222,7 @@ public class FileChooser {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mIntent.getAction().equals(Intent.ACTION_GET_CONTENT)) {
                 mIntent.setAction(Intent.ACTION_GET_CONTENT);
             }
+            System.out.println("-------------------");
             return mIntent;
         }
 
