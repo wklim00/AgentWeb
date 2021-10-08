@@ -2,8 +2,8 @@
     <string name="agentweb_download_task_has_been_exist">The task already exists, do not repeat click to download!</string>
     <string name="agentweb_tips">Note</string>
     <string name="agentweb_honeycomblow">Wi-Fi disconnected. Continue the download via mobile data network?</string>
-    <string name="agentweb_download">Download</string>
-    <string name="agentweb_cancel">Cancel</string>
+    <string name="agentweb_download">다운로드</string>
+    <string name="agentweb_cancel">취소</string>
     <string name="agentweb_download_fail">Download failed!</string>
     <string name="agentweb_current_downloading_progress">Downloading:%s</string>
     <string name="agentweb_current_downloaded_length">downloaded:%s</string>
