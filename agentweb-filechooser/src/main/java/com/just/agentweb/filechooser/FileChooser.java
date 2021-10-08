@@ -212,6 +212,7 @@ public class FileChooser {
     }
 
     private Intent getFileChooserIntent() {
+        System.out.println("222222222");
         Intent mIntent = null;
         if (mIsAboveLollipop && mFileChooserParams != null && (mIntent = mFileChooserParams.createIntent()) != null) {
             // 多选
