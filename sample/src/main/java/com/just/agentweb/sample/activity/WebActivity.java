@@ -10,7 +10,7 @@ public class WebActivity extends BaseWebActivity {
 
     @Override
     public String getUrl() {
-        return "http://192.168.0.55:9000";
+        return "https://matoyou.com";
     }
 
     @Override

@@ -441,7 +441,7 @@ public class FileChooser {
 
         //5.0以上系统通过input标签获取文件
         if (mIsAboveLollipop) {
-            aboveLollipopCheckFilesAndCallback(mCameraState ? new Uri[]{data.getParcelableExtra(KEY_URI)} : processData(data), mCameraState);
+            aboveLollipopCheckFilesAndCallback(mCameraState ? new Uri[]{data.getParcelableExtra(KEY_URI)} : processData(data), mCameraState,data,resultCode);
             return;
         }
 
@@ -567,7 +567,7 @@ public class FileChooser {
      * @param datas
      * @param isCamera
      */
-    private void aboveLollipopCheckFilesAndCallback(final Uri[] datas, boolean isCamera) {
+    private void aboveLollipopCheckFilesAndCallback(final Uri[] datas, boolean isCamera,Intent intent,int resultCode) {
         if (mUriValueCallbacks == null) {
             return;
         }
@@ -586,7 +586,12 @@ public class FileChooser {
             }
         }
         if (!isCamera) {
-            mUriValueCallbacks.onReceiveValue(datas == null ? new Uri[]{} : datas);
+            //파일 선택 완료 했을 경우
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mUriValueCallbacks.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
+            }else{
+                mUriValueCallbacks.onReceiveValue(new Uri[]{intent.getData()});
+            }
             return;
         }
 
