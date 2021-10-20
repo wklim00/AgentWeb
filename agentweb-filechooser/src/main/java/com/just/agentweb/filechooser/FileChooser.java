@@ -571,27 +571,22 @@ public class FileChooser {
         if (mUriValueCallbacks == null) {
             return;
         }
-        if (null != datas && datas.length > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ContentResolver contentResolver = mActivity.getContentResolver();
-            final int takeFlags = (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            for (int i = 0; i < datas.length; i++) {
-                try {
-                    contentResolver.takePersistableUriPermission(datas[i], takeFlags);
-                } catch (Throwable throwable) {
-                    if (AgentWebConfig.DEBUG) {
-                        throwable.printStackTrace();
-                    }
-                }
-            }
-        }
+//        if (null != datas && datas.length > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            ContentResolver contentResolver = mActivity.getContentResolver();
+//            final int takeFlags = (Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            for (int i = 0; i < datas.length; i++) {
+//                try {
+//                    contentResolver.takePersistableUriPermission(datas[i], takeFlags);
+//                } catch (Throwable throwable) {
+//                    if (AgentWebConfig.DEBUG) {
+//                        throwable.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
         if (!isCamera) {
-            //파일 선택 완료 했을 경우
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mUriValueCallbacks.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
-            }else{
-                mUriValueCallbacks.onReceiveValue(new Uri[]{intent.getData()});
-            }
+            mUriValueCallbacks.onReceiveValue(UriConverter.convert(mActivity.getContentResolver(),mActivity,datas));
             return;
         }
 
