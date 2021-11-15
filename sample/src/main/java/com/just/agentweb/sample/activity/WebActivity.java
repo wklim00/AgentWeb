@@ -10,7 +10,7 @@ public class WebActivity extends BaseWebActivity {
 
     @Override
     public String getUrl() {
-        return "http://staging.sdk.mint-app.com/";
+        return "http://192.168.0.55:9000/";
     }
 
     @Override
