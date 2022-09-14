@@ -114,6 +114,8 @@ public abstract class AbsAgentWebUIController {
 
 	public abstract void onSelectItemsPrompt(WebView view, String url, String[] ways, Handler.Callback callback);
 
+	public abstract void onSelectItemsPrompt(WebView view, String url, int[] icons, String[] ways, Handler.Callback callback);
+
 	/**
 	 * 强制下载弹窗
 	 *

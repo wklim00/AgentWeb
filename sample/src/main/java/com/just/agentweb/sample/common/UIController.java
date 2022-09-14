@@ -33,8 +33,12 @@ public class UIController extends AgentWebUIControllerImplBase {
        super.onSelectItemsPrompt(view,url,items,callback); // 使用默认的UI
     }
 
+    @Override
+    public void onSelectItemsPrompt(WebView view, String url, int[] icons, String[] ways, Handler.Callback callback) {
+        super.onSelectItemsPrompt(view, url, icons, ways, callback);
+    }
 
-    /**
+/**
      * 修改文件选择的弹窗
      */
    /* @Override

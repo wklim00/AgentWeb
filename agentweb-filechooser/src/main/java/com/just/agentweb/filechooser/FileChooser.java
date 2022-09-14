@@ -147,6 +147,8 @@ public class FileChooser {
 
     private Handler.Callback mJsChannelHandler$Callback;
 
+    private boolean newContentsChooser = true;
+
     public FileChooser(Builder builder) {
 
         this.mActivity = builder.mActivity;
@@ -253,44 +255,54 @@ public class FileChooser {
 
 
     private void openFileChooserInternal() {
-        boolean needVideo = false;
-        // 在此支持视频拍摄
-        // 是否直接打开文件选择器
-        if (this.mIsAboveLollipop && this.mFileChooserParams != null && this.mFileChooserParams.getAcceptTypes() != null) {
-            boolean needCamera = false;
-            String[] types = this.mFileChooserParams.getAcceptTypes();
-            for (String typeTmp : types) {
-                if (TextUtils.isEmpty(typeTmp)) {
-                    continue;
-                }
-                if (typeTmp.contains("*/") || typeTmp.contains("image/")) {  //这是拍照模式
-                    needCamera = true;
-                    break;
-                }
+        if (this.newContentsChooser) {
+            if (this.mAgentWebUIController.get() != null) {
+                this.mAgentWebUIController
+                  .get()
+                  .onSelectItemsPrompt(this.mWebView, mWebView.getUrl(),
+                    new int[]{R.mipmap.camera, R.mipmap.file},
+                    new String[]{mActivity.getString(R.string.agentweb_camera),
+                      mActivity.getString(R.string.agentweb_file_chooser)}, getCallBack());
+            }
+        } else {
+            boolean needVideo = false;
+            // 在此支持视频拍摄
+            // 是否直接打开文件选择器
+            if (this.mIsAboveLollipop && this.mFileChooserParams != null && this.mFileChooserParams.getAcceptTypes() != null) {
+                boolean needCamera = false;
+                String[] types = this.mFileChooserParams.getAcceptTypes();
+                for (String typeTmp : types) {
+                    if (TextUtils.isEmpty(typeTmp)) {
+                        continue;
+                    }
+                    if (typeTmp.contains("*/") || typeTmp.contains("image/")) {  //这是拍照模式
+                        needCamera = true;
+                        break;
+                    }
 
-                if (typeTmp.contains("video/")) {  //调用摄像机拍摄  这是录像模式
-                    needCamera = true;
-                    mVideoState = true;
+                    if (typeTmp.contains("video/")) {  //调用摄像机拍摄  这是录像模式
+                        needCamera = true;
+                        mVideoState = true;
+                    }
+                }
+                if (!needCamera && !needVideo) {
+                    touchOffFileChooserAction();
+                    return;
                 }
             }
-            if (!needCamera && !needVideo) {
+            if (!TextUtils.isEmpty(this.mAcceptType) && !this.mAcceptType.contains("*/") && !this.mAcceptType.contains("image/")) {
                 touchOffFileChooserAction();
                 return;
             }
-        }
-        if (!TextUtils.isEmpty(this.mAcceptType) && !this.mAcceptType.contains("*/") && !this.mAcceptType.contains("image/")) {
-            touchOffFileChooserAction();
-            return;
-        }
 
-        if (this.mAgentWebUIController.get() != null) {
-            this.mAgentWebUIController
-                    .get()
-                    .onSelectItemsPrompt(this.mWebView, mWebView.getUrl(),
-                            new String[]{mActivity.getString(R.string.agentweb_camera),
-                                    mActivity.getString(R.string.agentweb_file_chooser)}, getCallBack());
+            if (this.mAgentWebUIController.get() != null) {
+                this.mAgentWebUIController
+                  .get()
+                  .onSelectItemsPrompt(this.mWebView, mWebView.getUrl(),
+                    new String[]{mActivity.getString(R.string.agentweb_camera),
+                      mActivity.getString(R.string.agentweb_file_chooser)}, getCallBack());
+            }
         }
-
     }
 
 

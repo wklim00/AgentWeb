@@ -104,6 +104,11 @@ public class DefaultUIController extends AbsAgentWebUIController {
 	}
 
 	@Override
+	public void onSelectItemsPrompt(WebView view, String url, int[] icons, String[] ways, Handler.Callback callback) {
+
+	}
+
+	@Override
 	public void onForceDownloadAlert(String url, final Handler.Callback callback) {
 		onForceDownloadAlertInternal(callback);
 	}

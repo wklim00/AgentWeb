@@ -55,6 +55,11 @@ public class AgentWebUIControllerImplBase extends AbsAgentWebUIController {
 	}
 
 	@Override
+	public void onSelectItemsPrompt(WebView view, String url, int[] icons, String[] ways, Handler.Callback callback) {
+		getDelegate().onSelectItemsPrompt(view, url, icons, ways, callback);
+	}
+
+	@Override
 	public void onForceDownloadAlert(String url, Handler.Callback callback) {
 		getDelegate().onForceDownloadAlert(url, callback);
 	}

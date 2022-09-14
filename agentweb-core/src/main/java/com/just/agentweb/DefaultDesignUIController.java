@@ -19,6 +19,7 @@ package com.just.agentweb;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -28,12 +29,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -91,6 +95,11 @@ public class DefaultDesignUIController extends DefaultUIController {
     }
 
     @Override
+    public void onSelectItemsPrompt(WebView view, String url, int[] icons, String[] ways, Handler.Callback callback) {
+        showChooserInternal(view, url, icons, ways, callback);
+    }
+
+    @Override
     public void onForceDownloadAlert(String url, final Handler.Callback callback) {
         super.onForceDownloadAlert(url, callback);
     }
@@ -125,6 +134,83 @@ public class DefaultDesignUIController extends DefaultUIController {
             }
         });
         mBottomSheetDialog.show();
+    }
+
+    private void showChooserInternal(WebView view, String url, final int[] icons, final String[] ways, final Handler.Callback callback) {
+        Activity mActivity;
+
+        if ((mActivity = this.mActivity) == null || mActivity.isFinishing()) {
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (mActivity.isDestroyed()) {
+                return;
+            }
+        }
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mActivity);
+        final LinearLayout linearLayout = new LinearLayout(mActivity);
+
+        final GradientDrawable gd = new GradientDrawable();
+        gd.setColor(Color.WHITE);
+        gd.setCornerRadii(new float[]{30, 30, 30, 30, 0, 0, 0, 0});
+
+        linearLayout.setBackgroundDrawable(gd);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setPadding(100, 100, 100, 100);
+
+        for (int i = 0; i < ways.length; i++) {
+            LogUtils.i(TAG, "url:" + url + "  ways:" + ways[i]);
+
+            LinearLayout.LayoutParams lp;
+
+            final LinearLayout llBtn = new LinearLayout(mActivity);
+            lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.weight = 1;
+            llBtn.setLayoutParams(lp);
+            llBtn.setOrientation(LinearLayout.VERTICAL);
+
+            final ImageView iv = new ImageView(mActivity);
+            lp = new LinearLayout.LayoutParams(130, 130);
+            lp.gravity = Gravity.CENTER;
+            lp.bottomMargin = 15;
+            iv.setLayoutParams(lp);
+            iv.setImageResource(icons[i]);
+            llBtn.addView(iv);
+
+            final TextView tv = new TextView(mActivity);
+            tv.setText(ways[i]);
+            tv.setTextSize(13);
+            tv.setTextColor(Color.BLACK);
+            tv.setGravity(Gravity.CENTER);
+            llBtn.addView(tv);
+
+            linearLayout.addView(llBtn);
+
+            final int finalI = i;
+            llBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetDialog.dismiss();
+
+                    Message mMessage = Message.obtain();
+                    mMessage.what = finalI;
+                    callback.handleMessage(mMessage);
+                }
+            });
+        }
+
+        bottomSheetDialog.setContentView(linearLayout);
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (callback != null) {
+                    callback.handleMessage(Message.obtain(null, -1));
+                }
+            }
+        });
+        bottomSheetDialog.show();
     }
 
     private RecyclerView.Adapter getAdapter(final String[] ways, final Handler.Callback callback) {
