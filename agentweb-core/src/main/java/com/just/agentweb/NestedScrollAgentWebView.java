@@ -37,6 +37,8 @@ public class NestedScrollAgentWebView extends AgentWebView implements NestedScro
     private int mNestedYOffset;
     private NestedScrollingChildHelper mChildHelper;
 
+    private boolean nestedScrollingEnabled = true;
+
     public NestedScrollAgentWebView(Context context) {
         super(context);
         init();
@@ -54,6 +56,10 @@ public class NestedScrollAgentWebView extends AgentWebView implements NestedScro
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!nestedScrollingEnabled) {
+            return super.onTouchEvent(event);
+        }
+
         boolean result = false;
         MotionEvent trackedEvent = MotionEvent.obtain(event);
         final int action = MotionEventCompat.getActionMasked(event);
@@ -105,6 +111,7 @@ public class NestedScrollAgentWebView extends AgentWebView implements NestedScro
 
     @Override
     public void setNestedScrollingEnabled(boolean enabled) {
+        nestedScrollingEnabled = enabled;
         mChildHelper.setNestedScrollingEnabled(enabled);
     }
 
