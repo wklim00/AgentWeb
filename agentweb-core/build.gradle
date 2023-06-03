@@ -7,8 +7,6 @@ android {
   defaultConfig {
     minSdkVersion MIN_SDK_VERSION.toInteger()
     targetSdkVersion TARGET_SDK_VERSION.toInteger()
-    versionCode VERSION_CODE.toInteger()
-    versionName VERSION_NAME
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -42,6 +40,7 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
+  namespace 'com.just.agentweb'
 
 //   defaultPublishConfig "debug"
 }
@@ -51,9 +50,9 @@ dependencies {
   androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  testImplementation 'junit:junit:4.12'
+  testImplementation 'junit:junit:4.13.2'
   compileOnly 'com.github.Justson:Downloader:v4.1.9-androidx'
-  compileOnly 'com.google.android.material:material:1.0.0'
+  compileOnly 'com.google.android.material:material:1.9.0'
   compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
   compileOnly fileTree(include: ['*.jar'], dir: 'providedLibs')
 }
