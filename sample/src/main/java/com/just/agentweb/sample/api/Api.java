@@ -7,6 +7,5 @@ package com.just.agentweb.sample.api;
  */
 public interface Api {
 
-    void onReady();
-
+  void onReady();
 }

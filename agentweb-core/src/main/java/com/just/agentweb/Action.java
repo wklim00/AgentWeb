@@ -16,8 +16,8 @@
 
 package com.just.agentweb;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.content.Intent;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,15 +28,20 @@ import java.util.List;
  * @author cenxiaozhong
  * @since 2.0.0
  */
-public class Action implements Parcelable {
+public final class Action {
 
 	public transient static final int ACTION_PERMISSION = 1;
 	public transient static final int ACTION_FILE = 2;
 	public transient static final int ACTION_CAMERA = 3;
 	public transient static final int ACTION_VIDEO = 4;
-	private ArrayList<String> mPermissions = new ArrayList();
+	private ArrayList<String> mPermissions = new ArrayList<>();
 	private int mAction;
 	private int mFromIntention;
+	private Intent mIntent;
+	private Uri mUri;
+	private AgentActionFragment.RationaleListener mRationaleListener;
+	private AgentActionFragment.PermissionListener mPermissionListener;
+	private AgentActionFragment.ChooserListener mChooserListener;
 
 	public Action() {
 	}
@@ -61,35 +66,6 @@ public class Action implements Parcelable {
 		this.mAction = action;
 	}
 
-	protected Action(Parcel in) {
-		mPermissions = in.createStringArrayList();
-		mAction = in.readInt();
-		mFromIntention = in.readInt();
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeStringList(mPermissions);
-		dest.writeInt(mAction);
-		dest.writeInt(mFromIntention);
-	}
-
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	public static final Creator<Action> CREATOR = new Creator<Action>() {
-		@Override
-		public Action createFromParcel(Parcel in) {
-			return new Action(in);
-		}
-
-		@Override
-		public Action[] newArray(int size) {
-			return new Action[size];
-		}
-	};
 
 	public int getFromIntention() {
 		return mFromIntention;
@@ -106,5 +82,45 @@ public class Action implements Parcelable {
 	public Action setFromIntention(int fromIntention) {
 		this.mFromIntention = fromIntention;
 		return this;
+	}
+
+	public AgentActionFragment.RationaleListener getRationaleListener() {
+		return mRationaleListener;
+	}
+
+	public void setRationaleListener(AgentActionFragment.RationaleListener rationaleListener) {
+		mRationaleListener = rationaleListener;
+	}
+
+	public AgentActionFragment.PermissionListener getPermissionListener() {
+		return mPermissionListener;
+	}
+
+	public void setPermissionListener(AgentActionFragment.PermissionListener permissionListener) {
+		mPermissionListener = permissionListener;
+	}
+
+	public AgentActionFragment.ChooserListener getChooserListener() {
+		return mChooserListener;
+	}
+
+	public void setChooserListener(AgentActionFragment.ChooserListener chooserListener) {
+		mChooserListener = chooserListener;
+	}
+
+	public Intent getIntent() {
+		return mIntent;
+	}
+
+	public Uri getUri() {
+		return mUri;
+	}
+
+	public void setUri(Uri uri) {
+		mUri = uri;
+	}
+
+	public void setIntent(Intent intent) {
+		mIntent = intent;
 	}
 }

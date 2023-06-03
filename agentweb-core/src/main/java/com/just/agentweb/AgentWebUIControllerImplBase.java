@@ -17,9 +17,12 @@
 package com.just.agentweb;
 
 import android.app.Activity;
+import android.net.http.SslError;
 import android.os.Handler;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
+import android.webkit.PermissionRequest;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 
 
@@ -101,9 +104,17 @@ public class AgentWebUIControllerImplBase extends AbsAgentWebUIController {
 	}
 
 	@Override
+	public void onShowSslCertificateErrorDialog(WebView view, SslErrorHandler handler, SslError error) {
+		getDelegate().onShowSslCertificateErrorDialog(view, handler, error);
+	}
+
+	@Override
+	public void onPermissionRequest(PermissionRequest request) {
+		getDelegate().onPermissionRequest(request);
+	}
+
+	@Override
 	protected void bindSupportWebParent(WebParentLayout webParentLayout, Activity activity) {
 		getDelegate().bindSupportWebParent(webParentLayout, activity);
 	}
-
-
 }

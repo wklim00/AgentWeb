@@ -1,83 +1,96 @@
-apply plugin: 'com.android.application'
+plugins {
+  id 'com.android.application'
+  id 'kotlin-android'
+}
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
-    buildToolsVersion BUILD_TOOL_VERSION
-    defaultConfig {
-        applicationId "com.just.agentweb.sample"
-        minSdkVersion 19
-        targetSdkVersion TARGET_SDK_VERSION.toInteger()
-        versionCode 4
-        versionName "4.1.9"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  compileSdkVersion COMPILE_SDK_VERSION.toInteger()
+  buildToolsVersion BUILD_TOOL_VERSION
+  defaultConfig {
+    applicationId "com.just.agentweb.sample"
+    minSdkVersion MIN_SDK_VERSION.toInteger()
+    targetSdkVersion TARGET_SDK_VERSION.toInteger()
+    versionCode VERSION_CODE.toInteger()
+    versionName VERSION_NAME
+
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    multiDexEnabled true
+  }
+
+  signingConfigs {
+    release {
+      storeFile file("./keystore/keystore.jks")
+      storePassword "admin123"
+      keyAlias "agentweb"
+      keyPassword "admin123"
     }
-    signingConfigs {
-        release {
-            storeFile file("./keystore/keystore.jks")
-            storePassword "admin123"
-            keyAlias "agentweb"
-            keyPassword "admin123"
-        }
-    }
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            signingConfig signingConfigs.release
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
-    lintOptions {
-        abortOnError false
+  }
+
+  buildTypes {
+    release {
+      signingConfig signingConfigs.release
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
 
-    lintOptions {
-        abortOnError false
+    debug {
+      signingConfig signingConfigs.release
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+  }
 
-    task wrapper(type: Wrapper) {
-        gradleVersion = '0.9'
-    }
+  sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
+  lintOptions {
+    abortOnError false
+    checkReleaseBuilds false
+  }
+
+  sourceSets {
+    main {
+      jniLibs.srcDirs = ['libs']
     }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
-    compile "com.android.support:design:${SUPPORT_LIB_VERSION}"
-    //    compile "com.android.support:support-v4:${SUPPORT_LIB_VERSION}"
-    testCompile 'junit:junit:4.12'
-    api project(':agentweb-core')
-    api project(':agentweb-filechooser')
-    implementation 'com.github.Justson:Downloader:v4.1.9'
-//    implementation 'com.github.Justson.AgentWeb:agentweb-core:v4.1.9'
-//    implementation 'com.github.Justson.AgentWeb:agentweb-filechooser:v4.1.9'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-//    compile files('libs/alipaysdk-20170922.jar')
-    implementation 'us.feras.mdv:markdownview:1.1.0'
-    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
-    implementation 'com.github.lzyzsd:jsbridge:1.0.4'
-    implementation 'com.google.code.gson:gson:2.3.1'
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
-    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
-    implementation 'com.tencent.sonic:sdk:2.0.0'
-    implementation 'com.coolindicator.sdk:coolindicator:1.0.0-beta'
-    implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.github.Justson:flying-pigeon:v1.0.7'
-    implementation 'com.github.Justson:dispatch-queue:v1.0.5'
+  api fileTree(include: ['*.jar'], dir: 'libs')
+  androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+  api 'androidx.appcompat:appcompat:1.5.0'
+  api 'com.google.android.material:material:1.6.1'
+//  compile "com.android.support:support-v4:${SUPPORT_LIB_VERSION}"
+  testImplementation 'junit:junit:4.12'
+  api project(':agentweb-core')
+  api project(':agentweb-filechooser')
+  implementation 'com.github.Justson:Downloader:v5.0.4-androidx'
+//  implementation 'com.github.Justson.AgentWeb:agentweb-core:v5.0.0-alpha.1-androidx'
+//  implementation 'com.github.Justson.AgentWeb:agentweb-filechooser:v5.0.0-alpha.1-androidx'
+//  debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+//  releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+//  testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+//  compile files('libs/alipaysdk-20170922.jar')
+  implementation 'us.feras.mdv:markdownview:1.1.0'
+  implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+  implementation 'com.github.lzyzsd:jsbridge:1.0.4'
+  implementation 'com.google.code.gson:gson:2.8.6'
+  implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+  implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
+  implementation 'com.tencent.sonic:sdk:2.0.0'
+  implementation 'com.coolindicator.sdk:coolindicator:1.0.0-beta'
+  implementation 'com.squareup.picasso:picasso:2.71828'
+  implementation 'com.github.Justson:flying-pigeon:v1.0.7'
+  implementation 'com.github.Justson:dispatch-queue:v1.0.5'
+  implementation('com.github.Ferfalk:SimpleSearchView:0.2.0', {
+    exclude group: 'com.android.support'
+  })
+  implementation 'top.zibin:Luban:1.1.8'
 }

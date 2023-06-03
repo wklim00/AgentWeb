@@ -1,43 +1,59 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
-    buildToolsVersion "${BUILD_TOOL_VERSION}"
+  compileSdkVersion COMPILE_SDK_VERSION.toInteger()
+  buildToolsVersion "${BUILD_TOOL_VERSION}"
 
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion TARGET_SDK_VERSION.toInteger()
-        versionCode 2
-        versionName "4.1.9"
+  defaultConfig {
+    minSdkVersion MIN_SDK_VERSION.toInteger()
+    targetSdkVersion TARGET_SDK_VERSION.toInteger()
+    versionCode VERSION_CODE.toInteger()
+    versionName VERSION_NAME
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+  }
 
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      buildConfigField 'String', 'VERSION_NAME', "\"" + VERSION_NAME + "\""
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+
+    debug {
+      buildConfigField 'String', 'VERSION_NAME', "\"" + VERSION_NAME + "\""
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-    lintOptions{
-        abortOnError false
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+
+  repositories {
+    flatDir {
+      dirs 'libs', 'providedLibs'
     }
-    repositories {
-        flatDir {
-            dirs 'libs', 'providedLibs'
-        }
-    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
 //   defaultPublishConfig "debug"
-
 }
+
 dependencies {
-    compileOnly fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
-    compileOnly 'com.github.Justson:Downloader:v4.1.9'
-    compileOnly "com.android.support:design:${SUPPORT_LIB_VERSION}"
-    compileOnly "com.android.support:support-v4:${SUPPORT_LIB_VERSION}"
-    compileOnly fileTree(include: ['*.jar'], dir: 'providedLibs')
+  compileOnly fileTree(include: ['*.jar'], dir: 'libs')
+  androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+  testImplementation 'junit:junit:4.12'
+  compileOnly 'com.github.Justson:Downloader:v4.1.9-androidx'
+  compileOnly 'com.google.android.material:material:1.0.0'
+  compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
+  compileOnly fileTree(include: ['*.jar'], dir: 'providedLibs')
 }
